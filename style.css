@@ -82,8 +82,7 @@ img{
 }
 
 #pics img:hover {
-    -webkit-transform:scale(2) translateX(45%);/* or some other value */
-    transform:scale(2) translateX(-45%);
+    transform:scale(2) translateX(-38%);
 }
 
 #pics {
