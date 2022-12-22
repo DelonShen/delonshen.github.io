@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <html>
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css" integrity="sha384-ZPe7yZ91iWxYumsBEOn7ieg8q/o+qh/hQpSaPow8T6BwALcXSCS6C6fSRPIAnTQs" crossorigin="anonymous">
@@ -16,6 +17,27 @@
     <p>Hi! I’m currently a graduate student in Physics at Stanford University supported by the NSF Graduate Research Fellowship. Previously, I was a undergrad at UT Austin.
   <br style="clear:both" />
     <h2> Publications </h2>
+    <details>
+      <summary>
+        <b id="ptitle"> Comparing Point Cloud Strategies for Collider Event Classification.</b> (with Peter Onyisi and Jesse Thaler) <!--<em>JOURNAL</em>-->
+    <div style="float:right"><a href="http://arxiv.org/abs/2212.10659">[2212.10659]</a><!--<a href="TODO">[journal]</a>--!></div> 
+  <br style="clear:both" />
+    </summary>
+    <div id="container">
+      <div id="text">
+        <i> Abstract: </i>
+In this paper, we compare several event classification architectures defined on the point cloud representation of collider events. These approaches, which are based on the frameworks of deep sets and edge convolutions, circumvent many of the difficulties associated with traditional feature engineering. To benchmark our architectures against more traditional event classification strategies, we perform a case study involving Higgs boson decays to tau leptons. We find a 2.5 times increase in performance compared to a baseline ATLAS analysis with engineered features. Our point cloud architectures can be viewed as simplified versions of graph neural networks, where each particle in the event corresponds to a graph node. In our case study, we find the best balance of performance and computational cost for simple pairwise architectures, which are based on learned edge features.
+      </div>
+      <div id="pics">
+        <img src="imgs/tsne_densities.svg">
+        <div id="small">(hover over to zoom)</div>
+      </div>
+    </div>
+    <div id="pics-mobile">
+        <img src="imgs/tsne_densities_mobile.svg">
+      </div>
+
+      </details>
 
   </body>
 
