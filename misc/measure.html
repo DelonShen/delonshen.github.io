@@ -30,9 +30,20 @@
     <input type="checkbox" id="10" name="frac" value="10">
     <label for="10"> 1/10</label><br>
     Subdivide Line:
-    <button onclick="redraw()">Another</button>
+    <button onclick="reseed(); draw1()">Start</button>
     <button onclick="draw1()">Reset</button>
     <button onclick="showAnswer1()">Answer</button>
+    <b>||</b> Relative Length:
+    <button onclick="reseed(); draw2()">Start</button>
+    Ratio? (e.g. 3/7) <input type="text" id="answer2" style="width:27px"></input>
+    <button onclick="showAnswer2()">Answer</button>
+    <b>||</b> Angle Mark Making:
+    <button onclick="reseed(); draw3()">Start</button>
+    <button onclick="draw3()">Reset</button>
+    <button onclick="showAnswer3()">Answer</button>
+
+    <br><br>
+
     <br><br>
 
     <div id="canvas">
