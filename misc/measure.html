@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>measurment training</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <b> measurement training</b>
+    <div>
+    <input type="checkbox" id="2" name="frac" value="2" checked>
+    <label for="2"> 1/2</label>
+    <input type="checkbox" id="3" name="frac" value="3">
+    <label for="3"> 1/3</label>
+    <input type="checkbox" id="4" name="frac" value="4">
+    <label for="4"> 1/4</label>
+    <input type="checkbox" id="5" name="frac" value="5">
+    <label for="5"> 1/5</label>
+    <input type="checkbox" id="6" name="frac" value="6">
+    <label for="6"> 1/6</label>
+    <input type="checkbox" id="7" name="frac" value="7">
+    <label for="7"> 1/7</label>
+    <input type="checkbox" id="8" name="frac" value="8">
+    <label for="8"> 1/8</label>
+    <input type="checkbox" id="9" name="frac" value="9">
+    <label for="9"> 1/9</label>
+    <input type="checkbox" id="10" name="frac" value="10">
+    <label for="10"> 1/10</label><br>
+    Subdivide Line:
+    <button onclick="redraw()">Another</button>
+    <button onclick="draw1()">Reset</button>
+    <button onclick="showAnswer1()">Answer</button>
+    <br><br>
+
+    <div id="canvas">
+    <script src="sketch.js"></script>
+    </div>
+  </body>
+</html>
