@@ -59,10 +59,6 @@ function reseed(){
   ax = w/2*(1+getRandomArbitrary(-1,1)/1.1)
   ay = h/2*(1+getRandomArbitrary(-1,1)/1.1)
 
-  if(qy > py){
-    [px, py, qx, qy] = [qx, qy, px, py]
-  }
-
   divs = getCheckedCheckboxesFor('frac')
   n_div = divs[Math.floor(Math.random()*divs.length)];
 
@@ -138,14 +134,6 @@ function draw2(){
   strokeWeight(0)
   text('What is (Length of Red)/(Length of Black)', w/2, 10);
 
-  px = w/2*(1+getRandomArbitrary(-1,1)/1.1)
-  py = h/2*(1+getRandomArbitrary(-1,1)/1.1)
-  qx = w/2*(1+getRandomArbitrary(-1,1)/1.1)
-  qy = h/2*(1+getRandomArbitrary(-1,1)/1.1)
-
-  if(qy > py){
-    [px, py, qx, qy] = [qx, qy, px, py]
-  }
   d = dist(px,py,qx,qy)
 
 
@@ -245,6 +233,13 @@ function draw3() {
   strokeWeight(2);
   line(px,py,qx,qy)
 
+  push() 
+  offset=16
+  translate(qx,qy); 
+  rotate(atan2(py-qy, px-qx)-HALF_PI); 
+  triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); 
+  pop();
+
   strokeWeight(5);
   stroke('red'); 
 
@@ -262,10 +257,6 @@ function grade3() {
   ay = usr_points[0][1]
   bx = usr_points[1][0]
   by = usr_points[1][1]
-
-  if(by > ay){
-    [ax, ay, bx, by] = [bx, by, ax, ay]
-  }
 
 
   c_ang = [angle(ax,ay,bx,by), angle(ax,ay,bx,by)+Math.Pi]
