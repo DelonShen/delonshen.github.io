@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>measurment training</title>
+    <title>eye training</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -9,8 +9,8 @@
 
   </head>
   <body>
-    <b> measurement training</b>
     <div>
+    <b> eye training</b>
     <input type="checkbox" id="2" name="frac" value="2" checked>
     <label for="2"> 1/2</label>
     <input type="checkbox" id="3" name="frac" value="3">
@@ -29,24 +29,27 @@
     <label for="9"> 1/9</label>
     <input type="checkbox" id="10" name="frac" value="10">
     <label for="10"> 1/10</label><br>
-    Subdivide Line:
-    <button onclick="reseed(); draw1()">Start</button>
-    <button onclick="draw1()">Reset</button>
-    <button onclick="showAnswer1()">Answer</button>
-    <b>||</b> Relative Length:
-    <button onclick="reseed(); draw2()">Start</button>
-    Ratio? (e.g. 3/7) <input type="number" id="answer2_0" style="width:35px" pattern="[0-9]*"></input> / <input type="number" id="answer2_1" style="width:35px" pattern="[0-9]*"></input>
+    Subdivide:
+    <button onclick="reseed(); draw1()">►</button>
+    <button onclick="draw1()">←</button>
+    <button onclick="showAnswer1()">■</button>
+    <b>||</b> Compare:
+    <button onclick="reseed(); draw2()">►</button>
+    Ratio? <input type="number" id="answer2_0" style="width:35px" pattern="[0-9]*"></input> / <input type="number" id="answer2_1" style="width:35px" pattern="[0-9]*"></input>
 
-    <button onclick="showAnswer2()">Answer</button>
-    <b>||</b> Angle Mark Making:
-    <button onclick="reseed(); draw3()">Start</button>
-    <button onclick="draw3()">Reset</button>
-    <button onclick="showAnswer3()">Answer</button>
+    <button onclick="showAnswer2()">■</button>
+    <b>||</b> Angle:
+    <button onclick="reseed(); draw3()">►</button>
+    <button onclick="draw3()">←</button>
+    <button onclick="showAnswer3()">■</button>
+    <b>||</b> Value:
+    <button onclick="draw4()">►</button>
+    <input type="checkbox" id="gray" name="game4" value="gray" checked>
+    <label for="gray"> BW</label>
+    Value? <input type="number" id="answer4_0" style="width:35px" pattern="[0-9]*"></input> 
+    <button onclick="showAnswer4()">■</button>
 
     <br><br>
-
-    <br><br>
-
     <div id="canvas">
     <script src="sketch.js"></script>
     </div>

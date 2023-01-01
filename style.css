@@ -27,13 +27,16 @@ a {
   font-size:13px;
 }
 
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
 em {
   font-size:70%;
 }
 
 details {
   font-size:16pt;
-  padding-bottom:25%;
 }
 #subtext {
   text-align: right;

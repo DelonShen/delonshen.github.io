@@ -7,6 +7,7 @@ var curr_ratio;
 var dmat;
 var d,dp;
 var CHAR_LENGTH;
+var col, c_value;
 
 
 const argFact = (compareFn) => (array) => array.map((el, idx) => [el, idx]).reduce(compareFn)[1]
@@ -17,7 +18,58 @@ const argMin = argFact((max, el) => (el[0] < max[0] ? el : max))
 var score1=0, n1=0;
 var score2=0, n2=0;
 var score3=0, n3=0;
+var score4=0, n4=0;
 
+//r, g, b \in [0,255]
+function RGBtoHSV(r, g, b) {
+    if (arguments.length === 1) {
+        g = r.g, b = r.b, r = r.r;
+    }
+    var max = Math.max(r, g, b), min = Math.min(r, g, b),
+        d = max - min,
+        h,
+        s = (max === 0 ? 0 : d / max),
+        v = max / 255;
+
+    switch (max) {
+        case min: h = 0; break;
+        case r: h = (g - b) + d * (g < b ? 6: 0); h /= 6 * d; break;
+        case g: h = (b - r) + d * 2; h /= 6 * d; break;
+        case b: h = (r - g) + d * 4; h /= 6 * d; break;
+    }
+
+    return {
+        h: h,
+        s: s,
+        v: v
+    };
+}
+
+//h, s, v \in [0,1]
+function HSVtoRGB(h, s, v) {
+    var r, g, b, i, f, p, q, t;
+    if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+    };
+}
 
 function getCheckedCheckboxesFor(checkboxName) {
   var checkboxes = document.querySelectorAll('input[name="' + checkboxName + '"]:checked'), values = [];
@@ -69,6 +121,7 @@ function draw() {
 
 function draw1() {
   clear()
+  fill(0)
 
   showScores()
 
@@ -130,6 +183,8 @@ function reduce(number,denomin){
 }
 function draw2(){
   clear()
+  fill(0)
+
   textAlign(CENTER);
   strokeWeight(0)
   text('What is (Length of Red)/(Length of Black)', w/2, 10);
@@ -150,7 +205,6 @@ function draw2(){
   possible_ratios = Array.from(possible_ratios)
 
   curr_ratio = possible_ratios[Math.floor(Math.random()*possible_ratios.length)].split('/')
-  console.log(curr_ratio)
 
   dp = d*curr_ratio[0]/curr_ratio[1]
 
@@ -165,7 +219,6 @@ function draw2(){
     dx = dp*Math.cos(ang)
     dy = dp*Math.sin(ang)
   }
-  console.log(dx, dy, dp, ang)
 
   stroke(0)
   strokeWeight(2);
@@ -194,9 +247,7 @@ function grade1(){
   grade = 0
   for(let i = 0; i<sub_points.length; i++){
     c_row = []
-    console.log('i ',i)
     for(let j =0; j<usr_points.length; j++){
-      console.log('j ',j)
       c_row.push(dist(sub_points[i][0], sub_points[i][1], usr_points[j][0], usr_points[j][1])/CHAR_LENGTH)
     }
     grade = grade + Math.min(...c_row)
@@ -216,10 +267,11 @@ function mousePressed() {
 
 function draw3() {
   clear()
+  fill(0)
 
   textAlign(CENTER);
   strokeWeight(0)
-  text('Draw the point whose resulting line recreates the angle shown', w/2, 10);
+  text('Draw the RED point whose resulting line recreates the angle shown', w/2, 10);
 
   usr_points = []
 
@@ -300,6 +352,54 @@ function showAnswer3() {
   text('Angle Err. '+(grd).toFixed(1)+'°',0, 10);
 }
 
+function draw4() {
+  clear()
+  fill(0)
+  text('What is the value? (0->100, Black->White)', w/2, 10);
+
+  showScores()
+
+  strokeWeight(0)
+  col = {"r": random(255), "g": random(255), "b":random(255)}
+  chk = document.getElementById("gray");
+  if(chk.checked){
+
+    console.log(col)
+    tmp = RGBtoHSV(col)
+
+    console.log(tmp)
+    tmp["s"] = 0
+    c_value = tmp["v"]
+    console.log(tmp)
+
+    col = HSVtoRGB(tmp)
+    console.log(col)
+  }
+
+  fill(col["r"], col["g"], col["b"]);
+  sze = Math.min(w,h)
+  hM = (h-sze)/2
+  wM = (w-sze)/2
+  square(wM,hM,sze)
+  fill(0)
+  textAlign(CENTER)
+  text('What is the value? (0->100, Black->White)', w/2, 10);
+
+}
+
+function showAnswer4() {
+  c_ans = document.getElementById("answer4_0").value
+  score = Math.abs(c_ans-c_value*100)
+  fill(0)
+  strokeWeight(0)
+  text('Value Err. '+score.toFixed(1), 0, 10)
+  fill(0)
+  textAlign(RIGHT)
+  text('Actual Value '+c_value*100, w, 10)
+
+  score4 = score4+score
+  n4 = n4+1
+}
 function showScores(){
   if(n1 > 0){
     strokeWeight(0)
@@ -317,5 +417,11 @@ function showScores(){
     textAlign(LEFT)
     text('Session Angle Err. '+((score3/n3)).toFixed(1)+'°', 0, 50);
   }
+  if(n4 > 0){
+    strokeWeight(0)
+    textAlign(LEFT)
+    text('Session Value Err. '+((score4/n4)).toFixed(1), 0, 60);
+  }
 
 }
+
