@@ -176,8 +176,7 @@ function draw2(){
 
 }
 function showAnswer2(){
-  c_ans = document.getElementById("answer2").value;
-  c_ans = c_ans.split('/')
+  c_ans = [document.getElementById("answer2_0").value, document.getElementById("answer2_1").value]
   strokeWeight(0)
   if(c_ans[0] == curr_ratio[0] && c_ans[1]==curr_ratio[1]){
     textAlign(LEFT)
@@ -298,7 +297,7 @@ function showAnswer3() {
   textAlign(LEFT)
   grd = grade3()
   strokeWeight(0)
-  text('Angle Err. '+(grd).toFixed(1),0, 10);
+  text('Angle Err. '+(grd).toFixed(1)+'°',0, 10);
 }
 
 function showScores(){
