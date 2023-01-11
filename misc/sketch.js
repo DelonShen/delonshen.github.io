@@ -6,9 +6,43 @@ var usr_points;
 var curr_ratio;
 var dmat;
 var d,dp;
-var CHAR_LENGTH;
 var col, c_value;
 
+function reduce(number,denomin){
+  var gcd = function gcd(a,b){
+    return b ? gcd(b, a%b) : a;
+  };
+  gcd = gcd(number,denomin);
+  return [number/gcd, denomin/gcd];
+}
+
+
+tmp_all = [1, 2, 3, 4, 5]//, 6, 7, 8, 9, 10]
+possible_all = new Set()
+for(let i = 0; i<tmp_all.length; i++){
+  for(let j=1; j<=2*tmp_all[i]; j++){
+    tmp = reduce(j, tmp_all[i])
+    possible_all.add(tmp[0]+'/'+tmp[1])
+  }
+}
+
+possible_all = Array.from(possible_all)
+possible_all_num = possible_all.map(eval)
+
+const dsu = (arr1, arr2) => arr1
+  .map((item, index) => [arr2[index], item]) // add the args to sort by
+  .sort(([arg1], [arg2]) => arg2 - arg1) // sort by the args
+  .map(([, item]) => item); // extract the sorted items
+  
+  
+possible_all = dsu(possible_all, possible_all_num).reverse()
+
+var comp_inp = document.getElementById('comp_in'),
+comp_oup = document.getElementById('comp_out');
+comp_inp.oninput = function(){
+    comp_oup.innerHTML = possible_all[this.value];
+};
+comp_inp.oninput();
 
 const argFact = (compareFn) => (array) => array.map((el, idx) => [el, idx]).reduce(compareFn)[1]
 
@@ -92,12 +126,14 @@ function getRandomArbitrary(min, max) {
 }
 
 function setup() {
-  w = windowWidth
+  w = windowWidth/1.1
   h = windowHeight/1.3
   cnv = createCanvas(w, h);
   cnv.parent('canvas');
- 
-  CHAR_LENGTH = Math.max(w,h)
+  cnv.position((windowWidth - w) / 2);
+
+  textSize(18)
+  strokeJoin(ROUND);
 
   noLoop();
 
@@ -112,22 +148,28 @@ function reseed(){
   ay = h/2*(1+getRandomArbitrary(-1,1)/1.1)
 
   divs = getCheckedCheckboxesFor('frac')
-  n_div = divs[Math.floor(Math.random()*divs.length)];
+  n_div = random(divs)
 
 }
 function draw() {
+  background(150)
+
   reseed()
 }
 
 function draw1() {
+
+
   clear()
+  background(150)
+
   fill(0)
 
   showScores()
 
   strokeWeight(0);
   textAlign(CENTER);
-  text('Divide into '+n_div, w/2, 10);
+  text('Divide into '+n_div, w/2, 15);
 
   sub_points = []
   usr_points = []
@@ -163,31 +205,24 @@ function showAnswer1(){
   }
   strokeWeight(0)
   textAlign(LEFT)
-  text('Rel. Err. '+(grade1()*100).toFixed(1)+'%', 0, 10);
+  stroke(255)
+  strokeWeight(4)
+
+  text('Rel. Err. '+(grade1()*10).toFixed(1), 0, 15);
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
-function reduce(number,denomin){
-  var gcd = function gcd(a,b){
-    return b ? gcd(b, a%b) : a;
-  };
-  gcd = gcd(number,denomin);
-  return [number/gcd, denomin/gcd];
-}
 function draw2(){
   clear()
+  background(150)
+
   fill(0)
 
   textAlign(CENTER);
   strokeWeight(0)
-  text('What is (Length of Red)/(Length of Black)', w/2, 10);
+  text('What is (Length of Red)/(Length of Black)', w/2, 15);
 
   d = dist(px,py,qx,qy)
 
@@ -196,7 +231,7 @@ function draw2(){
 
   possible_ratios = new Set()
   for(let i = 0; i<divs.length; i++){
-    for(let j=1; j<=divs[i]; j++){
+    for(let j=1; j<=2*divs[i]; j++){
       tmp = reduce(j, divs[i])
       possible_ratios.add(tmp[0]+'/'+tmp[1])
     }
@@ -204,41 +239,61 @@ function draw2(){
 
   possible_ratios = Array.from(possible_ratios)
 
-  curr_ratio = possible_ratios[Math.floor(Math.random()*possible_ratios.length)].split('/')
+  console.log(possible_ratios)
 
+  curr_ratio = random(possible_ratios).split('/')
+
+  console.log(curr_ratio)
+
+  
   dp = d*curr_ratio[0]/curr_ratio[1]
 
 
-  ax = w/2*(1+getRandomArbitrary(-1,1)/1.1)
-  ay = h/2*(1+getRandomArbitrary(-1,1)/1.1)
+  ax = w/2*(1+getRandomArbitrary(-0.7,0.7)/1.1)
+  ay = h/2*(1+getRandomArbitrary(-0.7,0.7)/1.1)
   ang = 2*Math.PI*Math.random()
   dx = dp*Math.cos(ang)
   dy = dp*Math.sin(ang)
-  while(ax+dx > w || ax+dx < 0 || ay+dy > h || ay + dy < 0){
+  
+  kl = 0 
+  while(kl<10 && (ax+dx > w || ax+dx < 0 || ay+dy > h || ay + dy < 0)){  
     ang = 2*Math.PI*Math.random()
     dx = dp*Math.cos(ang)
     dy = dp*Math.sin(ang)
+    kl = kl + 1
   }
-
-  stroke(0)
-  strokeWeight(2);
-  line(px,py,qx,qy)
-  stroke('red')
-  strokeWeight(2);
-  line(ax,ay,ax+dx,ay+dy)
+  if(kl == 10){
+    reseed()
+    draw2()
+  }
+  else{
+    stroke(0)
+    strokeWeight(2);
+    line(px,py,qx,qy)
+    stroke('red')
+    strokeWeight(2);
+    line(ax,ay,ax+dx,ay+dy)
+  }
 
 }
 function showAnswer2(){
-  c_ans = [document.getElementById("answer2_0").value, document.getElementById("answer2_1").value]
+  c_ans = possible_all[document.getElementById("comp_in").value].split('/')
+  console.log(c_ans)
   strokeWeight(0)
   if(c_ans[0] == curr_ratio[0] && c_ans[1]==curr_ratio[1]){
+    stroke(255)
+    strokeWeight(4)
+
     textAlign(LEFT)
-    text('Correct!', 0, 10);
+    text('Correct!', 0, 15);
     score2 = score2+1
   }
   else{
+    stroke(255)
+    strokeWeight(4)
+
     textAlign(LEFT)
-    text('Incorrect. Actually '+curr_ratio[0]+'/'+curr_ratio[1], 0, 10);
+    text('Incorrect. Actually '+curr_ratio[0]+'/'+curr_ratio[1], 0, 15);
   }
   n2 = n2+1
 }
@@ -248,7 +303,7 @@ function grade1(){
   for(let i = 0; i<sub_points.length; i++){
     c_row = []
     for(let j =0; j<usr_points.length; j++){
-      c_row.push(dist(sub_points[i][0], sub_points[i][1], usr_points[j][0], usr_points[j][1])/CHAR_LENGTH)
+      c_row.push(dist(sub_points[i][0], sub_points[i][1], usr_points[j][0], usr_points[j][1]))
     }
     grade = grade + Math.min(...c_row)
   }
@@ -267,11 +322,14 @@ function mousePressed() {
 
 function draw3() {
   clear()
+  background(150)
+
   fill(0)
+
 
   textAlign(CENTER);
   strokeWeight(0)
-  text('Draw the RED point whose resulting line recreates the angle shown', w/2, 10);
+  text('Draw the RED point whose resulting line recreates the angle shown', w/2, 15);
 
   usr_points = []
 
@@ -346,35 +404,40 @@ function grade3() {
 }
 function showAnswer3() {
   strokeWeight(0)
+  stroke(255)
+  strokeWeight(4)
+
   textAlign(LEFT)
   grd = grade3()
-  strokeWeight(0)
-  text('Angle Err. '+(grd).toFixed(1)+'°',0, 10);
+  stroke(255)
+  strokeWeight(4)
+
+  text('Angle Err. '+(grd).toFixed(1)+'°',0, 15);
 }
 
 function draw4() {
   clear()
   fill(0)
-  text('What is the value? (0->100, Black->White)', w/2, 10);
+  chk = document.getElementById("gray");
 
+  if(chk.checked){
+    background(random(255))
+  }
+  else{
+    background(random(255), random(255),random(255))
+  }
   showScores()
 
   strokeWeight(0)
-  col = {"r": random(255), "g": random(255), "b":random(255)}
-  chk = document.getElementById("gray");
+  col = {"h": Math.random(), "s": Math.random(), "v": Math.random()}
+  c_value = col["v"]
+
+
   if(chk.checked){
-
-    console.log(col)
-    tmp = RGBtoHSV(col)
-
-    console.log(tmp)
-    tmp["s"] = 0
-    c_value = tmp["v"]
-    console.log(tmp)
-
-    col = HSVtoRGB(tmp)
-    console.log(col)
+    col["s"] = 0
   }
+
+  col = HSVtoRGB(col)
 
   fill(col["r"], col["g"], col["b"]);
   sze = Math.min(w,h)
@@ -383,7 +446,9 @@ function draw4() {
   square(wM,hM,sze)
   fill(0)
   textAlign(CENTER)
-  text('What is the value? (0->100, Black->White)', w/2, 10);
+  stroke(255)
+  strokeWeight(4)
+  text('What is the value? (0->100, Black->White)', w/2, 15);
 
 }
 
@@ -392,35 +457,44 @@ function showAnswer4() {
   score = Math.abs(c_ans-c_value*100)
   fill(0)
   strokeWeight(0)
-  text('Value Err. '+score.toFixed(1), 0, 10)
+  stroke(255)
+  strokeWeight(4)
+
+  textAlign(LEFT)
+  text('Value Err. '+score.toFixed(1), 0, 15)
   fill(0)
   textAlign(RIGHT)
-  text('Actual Value '+c_value*100, w, 10)
+  text('Actual Value '+(c_value*100).toFixed(1), w, 15)
 
   score4 = score4+score
   n4 = n4+1
 }
 function showScores(){
   if(n1 > 0){
-    strokeWeight(0)
+    stroke(255)
+    strokeWeight(4)
+
     textAlign(LEFT)
-    text('Session Subdivide Rel. Err. '+((score1/n1)*100).toFixed(1)+'%', 0, 30);
+    text('Session Subdivide Rel. Err. '+((score1/n1)*10).toFixed(1), 0, 30);
   }
   if(n2 > 0){
-    strokeWeight(0)
+    stroke(255)
+    strokeWeight(4)
     textAlign(LEFT);
-    text('Session Rel. Length Score '+((score2/n2)*100).toFixed(1)+'%', 0, 40);
+    text('Session Rel. Length Score '+((score2/n2)*100).toFixed(1)+'%', 0, 45);
 
   }
   if(n3 > 0){
-    strokeWeight(0)
+    stroke(255)
+    strokeWeight(4)
     textAlign(LEFT)
-    text('Session Angle Err. '+((score3/n3)).toFixed(1)+'°', 0, 50);
+    text('Session Angle Err. '+((score3/n3)).toFixed(1)+'°', 0, 60);
   }
   if(n4 > 0){
-    strokeWeight(0)
+    stroke(255)
+    strokeWeight(4)
     textAlign(LEFT)
-    text('Session Value Err. '+((score4/n4)).toFixed(1), 0, 60);
+    text('Session Value Err. '+((score4/n4)).toFixed(1), 0, 75);
   }
 
 }

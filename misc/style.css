@@ -1,5 +1,5 @@
 html, body {
-  margin: 0;
+  margin: 1%;
   padding: 0;
 }
 canvas {
@@ -13,4 +13,21 @@ button {
     cursor: pointer;
     overflow: hidden;
     outline: none;
+}
+datalist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  writing-mode: vertical-lr;
+  width: 80%;
+}
+
+option {
+  padding: 0;
+}
+button {
+  color: black;
+}
+input {
+accent-color: white
 }
