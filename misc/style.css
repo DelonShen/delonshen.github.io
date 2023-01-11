@@ -19,7 +19,7 @@ datalist {
   flex-direction: column;
   justify-content: space-between;
   writing-mode: vertical-lr;
-  width: 80%;
+  width: 77%;
 }
 
 option {
@@ -28,6 +28,9 @@ option {
 button {
   color: black;
 }
-input {
-accent-color: white
+input[type="checkbox"]{
+  accent-color: black
+}
+input[type="range"]{
+  accent-color: white
 }

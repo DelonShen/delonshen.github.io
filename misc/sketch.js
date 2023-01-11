@@ -426,7 +426,6 @@ function draw4() {
   else{
     background(random(255), random(255),random(255))
   }
-  showScores()
 
   strokeWeight(0)
   col = {"h": Math.random(), "s": Math.random(), "v": Math.random()}
@@ -450,6 +449,7 @@ function draw4() {
   strokeWeight(4)
   text('What is the value? (0->100, Black->White)', w/2, 15);
 
+  showScores()
 }
 
 function showAnswer4() {
