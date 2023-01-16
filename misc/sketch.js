@@ -307,9 +307,10 @@ function grade1(){
     }
     grade = grade + Math.min(...c_row)
   }
+  grade = grade/sub_points.length
   score1 = score1 + grade
   n1 = n1 + 1
-  return grade/sub_points.length
+  return grade
 }
 
 function mousePressed() {
