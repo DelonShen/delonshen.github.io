@@ -15,7 +15,8 @@ let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 
 let alarm = new Audio('alarm.mp3');
-
+alarm.controls = true;
+alarm.playsinline = true;
 
 // iOS audio workaround
 window.addEventListener('touchstart', function () {
