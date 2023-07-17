@@ -3,13 +3,17 @@
 let countdown;
 let isWorking = true;
 let workSessions = 0;
+let remaining = 0; // new variable to store remaining time
 const timerDisplay = document.querySelector('#timer');
 const workTimeInput = document.querySelector('#workTime');
 const breakTimeInput = document.querySelector('#breakTime');
 const longBreakTimeInput = document.querySelector('#longBreakTime');
 const startButton = document.querySelector('#start');
+const pauseButton = document.querySelector('#pause'); // new pause button
 const stopButton = document.querySelector('#stop');
-const alarm = new Audio('gong.mp3');
+let alarm = new Audio('alarm.mp3');
+
+// ... same iOS audio workaround as before ...
 
 function timer(seconds) {
     clearInterval(countdown);
@@ -19,6 +23,7 @@ function timer(seconds) {
 
     countdown = setInterval(() => {
         const secondsLeft = Math.round((then - Date.now()) / 1000);
+        remaining = secondsLeft; // update remaining time
         if(secondsLeft < 0) {
             clearInterval(countdown);
             alarm.play();
@@ -49,10 +54,52 @@ function displayTimeLeft(seconds) {
 startButton.addEventListener('click', () => {
     isWorking = true;
     workSessions = 0;
-    const workTime = workTimeInput.value * 60;
+    const workTime = remaining > 0 ? remaining : workTimeInput.value * 60; // use remaining time if it exists
     timer(workTime);
+});
+
+pauseButton.addEventListener('click', () => { // new pause button event listener
+    clearInterval(countdown);
 });
 
 stopButton.addEventListener('click', () => {
     clearInterval(countdown);
+    remaining = 0; // reset remaining time
+});
+
+
+startButton.addEventListener('click', () => {
+    isWorking = true;
+    workSessions = 0;
+    const workTime = remaining > 0 ? remaining : workTimeInput.value * 60; // use remaining time if it exists
+    timer(workTime);
+    timerDisplay.classList.remove('paused', 'stopped');
+    timerDisplay.classList.add('running'); // change color to running
+});
+
+pauseButton.addEventListener('click', () => { // new pause button event listener
+    clearInterval(countdown);
+    timerDisplay.classList.remove('running', 'stopped');
+    timerDisplay.classList.add('paused'); // change color to paused
+});
+
+stopButton.addEventListener('click', () => {
+    clearInterval(countdown);
+    remaining = 0; // reset remaining time
+    timerDisplay.classList.remove('running', 'paused');
+    timerDisplay.classList.add('stopped'); // change color to stopped
+});
+
+// Add event listeners for the custom increment and decrement buttons
+document.querySelectorAll('.inc').forEach(button => {
+    button.addEventListener('click', () => {
+        const targetInput = document.querySelector('#' + button.dataset.target);
+        targetInput.value = parseInt(targetInput.value) + 1;
+    });
+});
+document.querySelectorAll('.dec').forEach(button => {
+    button.addEventListener('click', () => {
+        const targetInput = document.querySelector('#' + button.dataset.target);
+        targetInput.value = Math.max(parseInt(targetInput.value) - 1, 0);
+    });
 });
