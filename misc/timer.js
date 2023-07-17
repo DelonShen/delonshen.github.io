@@ -11,9 +11,22 @@ const longBreakTimeInput = document.querySelector('#longBreakTime');
 const startButton = document.querySelector('#start');
 const pauseButton = document.querySelector('#pause'); // new pause button
 const stopButton = document.querySelector('#stop');
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+
 let alarm = new Audio('alarm.mp3');
 
-// ... same iOS audio workaround as before ...
+
+// iOS audio workaround
+window.addEventListener('touchstart', function () {
+    var buffer = new ArrayBuffer(1);
+    var source = audioContext.createBufferSource();
+
+    source.buffer = audioContext.createBuffer(1, 1, 22050);
+    source.connect(audioContext.destination);
+    source.start();
+}, false);
+
 
 function timer(seconds) {
     clearInterval(countdown);
