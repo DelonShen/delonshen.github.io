@@ -11,16 +11,17 @@ const longBreakTimeInput = document.querySelector('#longBreakTime');
 const startButton = document.querySelector('#start');
 const pauseButton = document.querySelector('#pause'); // new pause button
 const stopButton = document.querySelector('#stop');
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 
 let alarm = new Audio('alarm.mp3');
 alarm.controls = true;
 alarm.playsinline = true;
 
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 // iOS audio workaround
 window.addEventListener('touchstart', function () {
     var buffer = new ArrayBuffer(1);
+
     var source = audioContext.createBufferSource();
 
     source.buffer = audioContext.createBuffer(1, 1, 22050);
@@ -28,6 +29,17 @@ window.addEventListener('touchstart', function () {
     source.start();
 }, false);
 
+
+startButton.addEventListener('click', () => {
+    audioContext.resume().then(() => {
+        isWorking = true;
+        workSessions = 0;
+        const workTime = remaining > 0 ? remaining : workTimeInput.value * 60; // use remaining time if it exists
+        timer(workTime);
+        timerDisplay.classList.remove('paused', 'stopped');
+        timerDisplay.classList.add('running'); // change color to running
+    });
+});
 
 function timer(seconds) {
     clearInterval(countdown);
