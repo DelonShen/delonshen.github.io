@@ -1,4 +1,5 @@
 
+
 // pomodoro.js
 let countdown;
 let isWorking = true;
@@ -13,24 +14,11 @@ const pauseButton = document.querySelector('#pause'); // new pause button
 const stopButton = document.querySelector('#stop');
 
 
+let alarm = new Audio('alarm.mp3');
+alarm.controls = true;
+alarm.playsinline = true;
+
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let alarmBuffer;
-
-
-fetch('alarm.mp3')
-    .then(response => response.arrayBuffer())
-    .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-    .then(audioBuffer => {
-        alarmBuffer = audioBuffer;
-    });
-
-function playAlarm() {
-    let source = audioContext.createBufferSource();
-    source.buffer = alarmBuffer;
-    source.connect(audioContext.destination);
-    source.start();
-}
-
 // iOS audio workaround
 window.addEventListener('touchstart', function () {
     var buffer = new ArrayBuffer(1);
@@ -65,7 +53,7 @@ function timer(seconds) {
         remaining = secondsLeft; // update remaining time
         if(secondsLeft < 0) {
             clearInterval(countdown);
-            playAlarm();
+            alarm.play();
             if (isWorking) {
                 workSessions++;
                 if (workSessions % 4 === 0) {
@@ -142,3 +130,7 @@ document.querySelectorAll('.dec').forEach(button => {
         targetInput.value = Math.max(parseInt(targetInput.value) - 1, 0);
     });
 });
+
+
+
+
